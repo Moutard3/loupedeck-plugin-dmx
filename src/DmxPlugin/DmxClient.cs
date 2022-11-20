@@ -11,17 +11,34 @@
 
         private readonly Byte[] channels = new Byte[9];
 
+        public Boolean IsConnected() => this.dmx.IsOpen && !this.dmx.IsDisposed;
+
         public void Connect()
         {
-            var devices = this.dmx.GetDevices();
+            OpenDMX.NET.FTDI.Device[] devices;
+
+            try
+            {
+                devices = this.dmx.GetDevices();
+            }
+            catch (OpenDMXException)
+            { return; }
 
             if (devices.Length > 0)
             {
-                this.dmx.Open(devices.First().DeviceIndex);
+                try
+                {
+                    this.dmx.Open(devices.First().DeviceIndex);
+                }
+                catch (OpenDMXException)
+                { }
             }
         }
 
-        public void Disconnect() => this.dmx.Dispose();
+        public void Disconnect()
+        {
+            this.dmx.Dispose();
+        }
 
         public void Send() => this.dmx.SetChannels(1, this.channels);
 

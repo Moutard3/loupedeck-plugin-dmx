@@ -9,7 +9,7 @@ namespace Loupedeck.DmxPlugin
         public AllCommand()
             : base("All", "Change all Channels", "Colors")
         {
-            this.MakeProfileAction("text;Values (separated by ; )");
+            this.MakeProfileAction("text;Values (separated by : )");
         }
         protected override Boolean OnLoad()
         {
@@ -20,7 +20,7 @@ namespace Loupedeck.DmxPlugin
 
         protected override void RunCommand(String actionParameter)
         {
-            var channelsValues = actionParameter.Split(';');
+            var channelsValues = actionParameter.Split(':');
 
             for (var i = 0; i < 512 && i < channelsValues.Length; i++)
             {
